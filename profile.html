@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет | N.L.B</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+    <style>
+        body, html { margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; background-color: #FFFFFF; color: #111111; }
+        
+        .header { display: flex; justify-content: space-between; padding: 30px 80px; border-bottom: 1px solid #EEE; }
+        .logo { font-size: 24px; font-weight: 300; letter-spacing: 4px; text-decoration: none; color: #111; }
+        .btn-outline { border: 1px solid #111; padding: 10px 25px; border-radius: 40px; text-decoration: none; color: #111; font-size: 14px; transition: 0.3s; cursor: pointer; background: transparent; }
+        .btn-outline:hover { background: #111; color: #FFF; }
+
+        .profile-container { max-width: 1000px; margin: 80px auto; padding: 0 40px; }
+        .profile-title { font-size: 40px; font-weight: 200; margin-bottom: 50px; text-transform: uppercase; }
+        
+        .info-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 50px; }
+        
+        .user-card { background: #F9F9F9; padding: 40px; border-radius: 2px; }
+        .user-name { font-size: 24px; font-weight: 400; margin-bottom: 10px; margin-top: 0; }
+        .user-phone { font-size: 15px; color: #666; margin-bottom: 30px; }
+        .stat-label { font-size: 12px; text-transform: uppercase; color: #888; letter-spacing: 1px; }
+        .stat-value { font-size: 16px; font-weight: 500; margin-top: 5px; }
+
+        .subscriptions-area h3 { font-size: 20px; font-weight: 400; margin-top: 0; margin-bottom: 25px; }
+        .sub-card { border: 1px solid #111; padding: 30px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .sub-name { font-size: 22px; font-weight: 400; }
+        .sub-status { font-size: 14px; padding: 5px 15px; border-radius: 20px; background: #E8F5E9; color: #2E7D32; font-weight: 500; }
+        .sub-expired { background: #FFEBEE; color: #C62828; }
+        .sub-dates { font-size: 14px; color: #666; margin-top: 10px; }
+        
+        .empty-state { padding: 40px; text-align: center; background: #F9F9F9; color: #666; font-size: 15px; }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <a href="index.html" class="logo">N.L.B</a>
+        <button class="btn-outline" onclick="logout()">Выйти</button>
+    </header>
+
+    <div class="profile-container">
+        <h1 class="profile-title">Личный кабинет</h1>
+        
+        <div class="info-grid">
+            <!-- Личные данные -->
+            <div class="user-card">
+                <h2 class="user-name" id="p-name">Загрузка...</h2>
+                <div class="user-phone" id="p-phone">--</div>
+                
+                <div class="stat-label">В клубе с</div>
+                <div class="stat-value" id="p-date">--</div>
+            </div>
+
+            <!-- Подписки -->
+            <div class="subscriptions-area">
+                <h3>Мои подписки</h3>
+                <div id="subs-list">
+                    <!-- Заполняется динамически -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('token');
+            if(!token) {
+                window.location.href = 'auth.html';
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/user/profile', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                const data = await res.json();
+                
+                if(data.success) {
+                    // Заполняем профиль
+                    document.getElementById('p-name').innerText = `${data.user.First_name} ${data.user.Last_name}`;
+                    document.getElementById('p-phone').innerText = data.user.Phone;
+                    const regDate = new Date(data.user.Registration_date);
+                    if (!isNaN(regDate.getTime())) {
+                        document.getElementById('p-date').innerText = regDate.toLocaleDateString('ru-RU');
+                    } else {
+                        document.getElementById('p-date').innerText = 'Нет данных';
+                    }
+
+                    // Заполняем тарифы
+                    const subsList = document.getElementById('subs-list');
+                    if(data.subscriptions.length === 0) {
+                        subsList.innerHTML = `<div class="empty-state">У вас пока нет активных подписок. 
+
+ <a href="tariffs.html" style="color:#111; font-weight:500;">Выбрать тариф</a></div>`;
+                    } else {
+                        let html = '';
+                        data.subscriptions.forEach(sub => {
+                            const isExpired = sub.Status !== 'Активна';
+                            html += `
+                            <div class="sub-card">
+                                <div>
+                                    <div class="sub-name">${sub.TariffName}</div>
+                                    <div class="sub-dates">До ${new Date(sub.End_date).toLocaleDateString('ru-RU')}</div>
+                                </div>
+                                <div class="sub-status ${isExpired ? 'sub-expired' : ''}">${sub.Status}</div>
+                            </div>`;
+                        });
+                        subsList.innerHTML = html;
+                    }
+                } else {
+                    logout();
+                }
+            } catch (e) {
+                console.error("Ошибка загрузки профиля");
+            }
+        });
+
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

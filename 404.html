@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+    body, html {
+         margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #111111;
+        color: #FFFFFF;
+        font-family: 'Montserrat', sans-serif;
+        overflow: hidden;
+    }
+    
+    #renderCanvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        touch-action: none;
+        outline: none;
+        z-index: 1;
+    }
+
+    .error-content {
+        position: absolute;
+        top: 50%;
+        left: 10%;
+        transform: translateY(-50%);
+        z-index: 10;
+        max-width: 600px;
+        pointer-events: none; 
+    }
+    
+    .error-content h1 {
+        font-size: 160px;
+        font-weight: 200; 
+        line-height: 1;
+        letter-spacing: -5px;
+        margin-bottom: 10px;
+        background: linear-gradient(to bottom, #111111 15%, #FF5A5F 85%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .error-content p {
+        font-size: 16px;
+        font-weight: 300;
+        color: #BBBBBB;
+        margin-top: 20px;
+        margin-bottom: 40px;
+        line-height: 1.6;
+    }
+    
+    .back-btn {
+        display: inline-block;
+        padding: 15px 35px;
+        border: 1px solid #FFFFFF;
+        color: #FFFFFF;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 2px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        pointer-events: auto;
+    }
+    
+    .back-btn:hover {
+        background-color: #FFFFFF;
+        color: #111111;
+    }
+    
+    @media (max-width: 768px) {
+        .error-content h1 {
+            font-size: 100px; 
+        }
+        .error-content p { 
+            font-size: 14px; 
+        }
+        .error-content { 
+            left: 5%; 
+            padding-right: 5%; 
+            top: 30%; 
+        }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="error-content">
+        <h1>404</h1>
+        <p>Кажется, вы сделали лишний круг! Вы заблудились, но мышечная память вас не подведет. Возвращайтесь на Главную страницу и начнем тренировку заново.</p>
+        <a href="/" class="back-btn">Вернуться на главную</a>
+    </div>
+
+    <canvas id="renderCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById("renderCanvas");
+        const engine = new BABYLON.Engine(canvas, true); 
+
+        const createScene = function () {
+            const scene = new BABYLON.Scene(engine);
+           
+            scene.clearColor = new BABYLON.Color4(0, 0, 0, 0);
+
+            const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2, 14, BABYLON.Vector3.Zero(), scene);
+
+            const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+            light.intensity = 1.5;
+
+            const dumbbell = new BABYLON.TransformNode("dumbbell", scene);
+
+            const material = new BABYLON.StandardMaterial("mat", scene);
+            material.wireframe = true;
+            material.emissiveColor = new BABYLON.Color3(0.8, 0.8, 0.8); 
+            
+            const handle = BABYLON.MeshBuilder.CreateCylinder("handle", {height: 5, diameter: 0.4}, scene);
+            handle.rotation.z = Math.PI / 2;
+            handle.material = material;
+            handle.parent = dumbbell; 
+
+            const weightOpts = {height: 0.8, diameter: 3.5, tessellation: 6};
+            
+            const w1 = BABYLON.MeshBuilder.CreateCylinder("w1", weightOpts, scene);
+            w1.rotation.z = Math.PI / 2;
+            w1.position.x = -1.8;
+            w1.material = material;
+            w1.parent = dumbbell;
+
+            const w2 = BABYLON.MeshBuilder.CreateCylinder("w2", weightOpts, scene);
+            w2.rotation.z = Math.PI / 2;
+            w2.position.x = 1.8;
+            w2.material = material;
+            w2.parent = dumbbell;
+
+            const smallOpts = {height: 0.5, diameter: 2.2, tessellation: 6};
+            
+            const w3 = BABYLON.MeshBuilder.CreateCylinder("w3", smallOpts, scene);
+            w3.rotation.z = Math.PI / 2;
+            w3.position.x = -1.1;
+            w3.material = material;
+            w3.parent = dumbbell;
+
+            const w4 = BABYLON.MeshBuilder.CreateCylinder("w4", smallOpts, scene);
+            w4.rotation.z = Math.PI / 2;
+            w4.position.x = 1.1;
+            w4.material = material;
+            w4.parent = dumbbell;
+
+            dumbbell.rotation.x = Math.PI / 4;
+            dumbbell.rotation.z = Math.PI / 6;
+
+            if (window.innerWidth < 768) {
+                dumbbell.position.x = 0;
+                dumbbell.position.y = -3;
+                camera.radius = 18; 
+            } else {
+                dumbbell.position.x = 4.5;
+            }
+
+            scene.onBeforeRenderObservable.add(() => {
+                dumbbell.rotation.y += 0.003;
+                dumbbell.rotation.x += 0.001;
+            });
+
+            scene.onPointerObservable.add((pointerInfo) => {
+                if(pointerInfo.type === BABYLON.PointerEventTypes.POINTERMOVE) {
+                    const offsetX = (scene.pointerX - canvas.width / 2) * 0.0003;
+                    const offsetY = (scene.pointerY - canvas.height / 2) * 0.0003;
+                    camera.alpha = -Math.PI / 2 - offsetX;
+                    camera.beta = Math.PI / 2 - offsetY;
+                }
+            });
+
+            return scene;
+        };
+
+        const scene = createScene();
+
+        engine.runRenderLoop(function () {
+            scene.render();
+        });
+
+        window.addEventListener("resize", function () {
+            engine.resize();
+        });
+
+        let isOnline = navigator.onLine;
+let pingInterval;
+
+
+function updateOnlineStatus(status) {
+    const toast = document.getElementById('offline-toast');
+    const dot = toast.querySelector('.offline-dot');
+    const text = document.getElementById('offline-text');
+
+    if (status) {
+        if (!isOnline) { 
+           
+            dot.classList.add('online');
+            text.innerText = 'Подключение восстановлено!';
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        isOnline = true;
+        setPingInterval(5000);
+    } else {
+        if (isOnline) {
+            dot.classList.remove('online');
+            text.innerText = 'Нет подключения к сети. Проверьте интернет.';
+            toast.classList.add('show');
+        }
+        isOnline = false;
+        setPingInterval(1000); 
+    }
+}
+
+
+window.addEventListener('online', () => {
+    updateOnlineStatus(true);
+    checkActualInternet();
+});
+
+window.addEventListener('offline', () => {
+    updateOnlineStatus(false);
+});
+
+setPingInterval(5000);
+    </script>
+</body>
+</html>

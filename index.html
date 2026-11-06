@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N.L.B</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;800&display=swap" rel="stylesheet">
+   
+</head>
+<body>
+
+    <aside class="sidebar-fixed" id="sidebar">
+        <div class="sidebar-line"></div>
+        <a href="index.html" class="sidebar-text" id="sidebar-label">N.L.B</a>
+    </aside>
+        
+    <section class="hero-section">
+        <div class="hero-bg"></div>
+        <div class="hero-bg-hover" id="hero-hover"></div>
+        <div class="hero-overlay"></div>
+        
+        <div class="hero-content">
+            <nav class="top-nav">
+                <div class="nav-links">
+                    <a href="tariffs.html">Тарифы</a>
+                    <a href="trainers.html">Тренеры</a>
+                    <a href="faq.html">FAQ</a>
+                    <a href="profile.html">Личный кабинет</a>
+                </div>
+                <div id="auth-buttons" style="display: flex; gap: 15px; margin-left: auto;">
+                    
+                </div>
+            </nav>
+
+            <h1 class="hero-title">
+                СИЛЬНЕЕ С<br>
+                КАЖДЫМ<br>
+                ДНЕМ
+                <span class="capsule" id="capsule-box">
+                    <img src="image/image 1 (13).png" alt="Runners">
+                </span>,<br>
+                УВЕРЕННЕЕ<br>
+                В КАЖДОМ<br>
+                ШАГЕ
+            </h1>
+        </div>
+    </section>
+
+    <div class="content-layer">
+        
+        <div class="sidebar-solid-bg" id="solid-sidebar-bg"></div>
+
+        <div class="sections-wrapper">
+            <section class="philosophy-section">
+                <h2>ИСКУССТВО БЫТЬ ПЕРВЫМ.<br>ФИЛОСОФИЯ N.L.B.</h2>
+                <div class="phil-flex">
+                    <div class="phil-label-col">
+                        <span class="phil-label">О нас</span>
+                        <div class="phil-line"></div>
+                    </div>
+                    <div class="phil-text">
+                        <p><strong>N.L.B</strong> — это не просто фитнес-клуб. Это закрытое комьюнити для тех, кто привык выбирать лучшее и не терпит компромиссов. Мы воплотили концепцию истинной «тихой роскоши» в индустрии спорта: здесь нет места лишнему шуму и визуальному мусору. Только безупречная эстетика, строгая приватность и абсолютный фокус на вашем результате. Мы создали пространство, где архитектура идеального тела гармонично сочетается с высоким стилем.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="values-section">
+                <div class="values-grid">
+                    <div class="value-card">
+                        <div class="bg-num">01</div>
+                        <h3>ЭСТЕТИКА И<br>ИННОВАЦИИ</h3>
+                        <p>Матовый графит, панорамные окна и профессиональный свет. Мы объединили передовые технологии биомеханики с эстетикой абсолютного премиума.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="bg-num">02</div>
+                        <h3>АБСОЛЮТНЫЙ<br>СЕРВИС</h3>
+                        <p>Внимание к деталям на уровне бутик-отелей. Премиальная косметика, умный доступ и личный консьерж для планирования вашего графика.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="bg-num">03</div>
+                        <h3>ЗАКРЫТОЕ<br>КОМЬЮНИТИ</h3>
+                        <p>Строгий лимит резидентов и гарантия приватности. Окружение успешных людей, объединенных стремлением к физическому совершенству.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="gallery-section">
+                <h2>ТЕРРИТОРИЯ ВЫСОКИХ<br>ДОСТИЖЕНИЙ</h2>
+                <div class="bento-grid">
+                    <img src="image/photo_2_2025-04-08_1.jpg.webp" class="bento-img img-1">
+                    <img src="image/122.webp" class="bento-img img-2">
+                    <img src="image/1112.jpg" class="bento-img img-3">
+                    <img src="image/333.webp" class="bento-img img-4">
+                    <img src="image/бар.webp" class="bento-img img-5">
+                </div>
+            </section>
+
+            <section class="lead-section">
+                <div class="lead-header">
+                    <h2>ОФОРМИТЬ ГОСТЕВОЙ ВИЗИТ</h2>
+                    <p>Оставьте данные, и ваш персональный менеджер свяжется с вами для резервирования времени</p>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-photo" style="background-image: url('image/image\ 7\ \(3\).png'); min-height: 450px;"></div>
+                    
+                    <div class="form-inputs">
+    <form id="guest-form">
+        <!-- Блок для ввода имени -->
+        <div style="position: relative; margin-bottom: 25px;">
+            <input type="text" id="guest-name" class="form-input" placeholder="Ваше имя">
+            <div id="name-error" style="color: #FF5A5F; font-size: 12px; position: absolute; bottom: -20px; left: 0; display: none;">
+                Введите корректное имя (только буквы)
+            </div>
+        </div>
+        
+        <!-- Блок для ввода телефона -->
+        <div style="position: relative; margin-bottom: 25px;">
+            <input type="tel" id="guest-phone" class="form-input" placeholder="Номер телефона">
+            <div id="phone-error" style="color: #FF5A5F; font-size: 12px; position: absolute; bottom: -20px; left: 0; display: none;">
+                Введите номер телефона полностью
+            </div>
+        </div>
+
+        <button type="submit" class="btn-submit">Записаться</button>
+    </form>
+</div>
+                </div>
+            </section>
+
+            <footer class="footer-section">
+                <div class="footer-bg-text">N.L.B</div>
+                <div class="footer-grid">
+                    <div class="f-col-left">
+                        <a href="index.html">Главная</a>
+                        <a href="tariffs.html">Тарифы</a>
+                        <a href="trainers.html">Тренеры</a>
+                        <a href="faq.html">FAQ</a>
+                    </div>
+                    <div class="f-col-right">
+                        <div class="footer-group">
+                            <p>Ул. Самарская, д.136</p>
+                            <p>+7 906 831-53-77</p>
+                        </div>
+                        <div class="footer-group">
+                            <p>Будние дни: с 8:00 до 22:00</p>
+                            <p>Выходные дни: с 10:00 до 20:00</p>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+    </div>
+<div id="offline-toast" class="offline-toast">
+        <div class="offline-dot"></div>
+        <span id="offline-text">Нет подключения к сети. Проверьте интернет.</span>
+    </div>
+
+    <div id="secret-modal">
+        <div id="secret-box">
+            <h2 class="secret-title">Секрет раскрыт</h2>
+            <p class="secret-desc">Назовите этот код бармену и получите скидку 50% на любой авторский коктейль.</p>
+            
+            <div class="secret-code">NLB-BAR-50</div>
+            
+            <p class="secret-date-text">Код действителен до: <span id="secret-date"></span></p>
+            
+            <button id="close-secret">Спрятать</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const logo = document.querySelector('.sidebar-text'); 
+            const modal = document.getElementById('secret-modal');
+            const box = document.getElementById('secret-box');
+            const closeBtn = document.getElementById('close-secret');
+            const dateSpan = document.getElementById('secret-date');
+
+            if (!logo || !modal) return; 
+
+            let clickCount = 0;
+            let clickTimer;
+
+            logo.addEventListener('click', (e) => {
+                e.preventDefault(); 
+                clickCount++;
+
+               
+                if (clickCount === 3) {
+                    clearTimeout(clickTimer);
+                    clickCount = 0;
+                    
+                    
+                    let expDate = new Date();
+                    expDate.setDate(expDate.getDate() + 30);
+                    dateSpan.innerText = expDate.toLocaleDateString('ru-RU');
+
+                    modal.style.display = 'flex';
+                    setTimeout(() => {
+                        modal.style.opacity = '1';
+                        box.style.transform = 'translateY(0)';
+                    }, 50);
+                } else {
+                    
+                    clearTimeout(clickTimer);
+                    clickTimer = setTimeout(() => {
+                        if (clickCount > 0 && clickCount < 3) {
+                            window.location.href = logo.getAttribute('href') || 'index.html';
+                        }
+                        clickCount = 0;
+                    }, 400); 
+                }
+            });
+
+            closeBtn.addEventListener('click', () => {
+                modal.style.opacity = '0';
+                box.style.transform = 'translateY(30px)';
+                setTimeout(() => modal.style.display = 'none', 400);
+            });
+        });
+
+   
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const capsule = document.getElementById('capsule-box');
+            const hoverBg = document.getElementById('hero-hover');
+            if (capsule && hoverBg) {
+                capsule.addEventListener('mouseenter', () => hoverBg.style.opacity = '1');
+                capsule.addEventListener('mouseleave', () => hoverBg.style.opacity = '0');
+            }
+
+            const sidebarFixed = document.getElementById('sidebar');
+            const sidebarText = document.getElementById('sidebar-label');
+            const solidBg = document.getElementById('solid-sidebar-bg');
+
+            if (sidebarFixed && sidebarText && solidBg) {
+                window.addEventListener('scroll', () => {
+                    const textRect = sidebarText.getBoundingClientRect();
+                    const textCenterY = textRect.top + (textRect.height / 2);
+                    const solidBgRect = solidBg.getBoundingClientRect();
+
+                    if (textCenterY >= solidBgRect.top) {
+                        sidebarFixed.classList.add('dark-mode');
+                    } else {
+                        sidebarFixed.classList.remove('dark-mode');
+                    }
+                });
+            }
+        });
+
+
+
+    (function() {
+
+        const MAX_CLICKS = 8; 
+        const CLICK_TIME_WINDOW = 2000; 
+        const MAX_MOUSE_SPEED = 10000; 
+
+        let clickCount = 0;
+        let lastClickTime = Date.now();
+
+        document.addEventListener('click', () => {
+            const now = Date.now();
+            
+            if (now - lastClickTime > CLICK_TIME_WINDOW) {
+                clickCount = 0; 
+            }
+            
+            clickCount++;
+            lastClickTime = now;
+
+            if (clickCount >= MAX_CLICKS) {
+                triggerSecurityRedirect("Обнаружено аномальное количество кликов");
+            }
+        });
+
+        let lastMouseX = -1;
+        let lastMouseY = -1;
+        let lastMouseTime = -1;
+
+        document.addEventListener('mousemove', (e) => {
+            if (lastMouseTime === -1) {
+                lastMouseX = e.pageX;
+                lastMouseY = e.pageY;
+                lastMouseTime = Date.now();
+                return;
+            }
+
+            const now = Date.now();
+            const timeDiff = now - lastMouseTime;
+
+            if (timeDiff > 100) {
+                const distance = Math.sqrt(Math.pow(e.pageX - lastMouseX, 2) + Math.pow(e.pageY - lastMouseY, 2));
+                const speed = (distance / timeDiff) * 1000; 
+
+                if (speed > MAX_MOUSE_SPEED) {
+                    triggerSecurityRedirect("Обнаружено слишком быстрое движение курсора");
+                }
+
+                lastMouseX = e.pageX;
+                lastMouseY = e.pageY;
+                lastMouseTime = now;
+            }
+        });
+
+        function triggerSecurityRedirect(reason) {
+            console.warn("Сработала защита:", reason);
+            
+            window.location.href = '404.html';
+        }
+    })();
+
+     
+let isOnline = navigator.onLine;
+let pingInterval;
+
+
+function updateOnlineStatus(status) {
+    const toast = document.getElementById('offline-toast');
+    const dot = toast.querySelector('.offline-dot');
+    const text = document.getElementById('offline-text');
+
+    if (status) {
+        if (!isOnline) { 
+           
+            dot.classList.add('online');
+            text.innerText = 'Подключение восстановлено!';
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        isOnline = true;
+        setPingInterval(5000);
+    } else {
+        if (isOnline) {
+            dot.classList.remove('online');
+            text.innerText = 'Нет подключения к сети. Проверьте интернет.';
+            toast.classList.add('show');
+        }
+        isOnline = false;
+        setPingInterval(1000); 
+    }
+}
+
+
+window.addEventListener('online', () => {
+    updateOnlineStatus(true);
+    checkActualInternet();
+});
+
+window.addEventListener('offline', () => {
+    updateOnlineStatus(false);
+});
+
+setPingInterval(5000);
+
+        document.addEventListener('DOMContentLoaded', () => {
+    const guestForm = document.getElementById('guest-form');
+    const guestName = document.getElementById('guest-name');
+    const guestPhone = document.getElementById('guest-phone');
+    const nameError = document.getElementById('name-error');
+    const phoneError = document.getElementById('phone-error');
+
+    if (guestForm) {
+        
+        guestPhone.addEventListener('input', function (e) {
+        
+            let input = e.target.value.replace(/\D/g, '');
+            
+            if (!input) {
+                e.target.value = '';
+                return;
+            }
+
+            
+            if (['7', '8', '9'].indexOf(input[0]) > -1) {
+                if (input[0] == '9') input = '7' + input;
+                let firstSymbols = (input[0] == '8') ? '8' : '+7';
+                let formattedInputValue = firstSymbols + ' ';
+                
+                if (input.length > 1) {
+                    formattedInputValue += '(' + input.substring(1, 4);
+                }
+                if (input.length >= 5) {
+                    formattedInputValue += ') ' + input.substring(4, 7);
+                }
+                if (input.length >= 8) {
+                    formattedInputValue += '-' + input.substring(7, 9);
+                }
+                if (input.length >= 10) {
+                    formattedInputValue += '-' + input.substring(9, 11);
+                }
+                e.target.value = formattedInputValue;
+            } else {
+                e.target.value = '+' + input.substring(0, 16);
+            }
+        });
+
+      
+        guestForm.addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            let isValid = true;
+
+            const nameRegex = /^[а-яА-ЯёЁa-zA-Z\s\-]{2,}$/;
+
+            if (!nameRegex.test(guestName.value.trim())) {
+                guestName.style.borderBottomColor = '#FF5A5F'; 
+                nameError.style.display = 'block'; 
+                isValid = false;
+            } else {
+                guestName.style.borderBottomColor = ''; 
+                nameError.style.display = 'none';
+            }
+            const phoneDigits = guestPhone.value.replace(/\D/g, '');
+            if (phoneDigits.length < 11) {
+                guestPhone.style.borderBottomColor = '#FF5A5F'; 
+                phoneError.style.display = 'block'; 
+                isValid = false;
+            } else {
+                guestPhone.style.borderBottomColor = ''; 
+                phoneError.style.display = 'none';
+            }
+
+           
+            if (isValid) {
+                alert('Заявка успешно отправлена! Ваш персональный менеджер скоро свяжется с вами.');
+                guestForm.reset(); 
+            }
+        });
+
+       
+        guestName.addEventListener('input', () => {
+            guestName.style.borderBottomColor = '';
+            nameError.style.display = 'none';
+        });
+        
+        guestPhone.addEventListener('keydown', () => {
+            guestPhone.style.borderBottomColor = '';
+            phoneError.style.display = 'none';
+        });
+    }
+});
+    </script>
+    <script>
+document.addEventListener('DOMContentLoaded', async () => {
+    // 1. Проверка токена (Сессии)
+    const token = localStorage.getItem('token');
+    const authContainer = document.getElementById('auth-buttons');
+    
+    if (token) {
+        // Пользователь авторизован
+        authContainer.innerHTML = `
+            <a href="tariffs.html" class="btn-outline">Купить подписку</a>
+            <a href="#" onclick="logoutUser()" class="btn-outline" style="background: transparent; border-color: #555;">Выйти</a>
+        `;
+    } else {
+        // Пользователь НЕ авторизован - ведем на новую чистую страницу авторизации
+        authContainer.innerHTML = `
+            <a href="auth.html#login" class="btn-outline">Вход</a>
+            <a href="auth.html#register" class="btn-outline">Регистрация</a>
+        `;
+    }
+
+    // 2. Динамический таймер акций
+    const timerTitle = document.querySelector('.hero-subtitle'); // Текст над таймером
+    const timerEl = document.getElementById('live-timer');
+    
+    if (timerEl && timerTitle) {
+        try {
+            const res = await fetch('/api/promo');
+            const promo = await res.json();
+            
+            if (promo.success && promo.data) {
+                timerTitle.innerHTML = promo.data.Title + ' действуют еще:';
+                const targetDate = new Date(promo.data.End_date).getTime();
+                
+                setInterval(() => {
+                    const now = new Date().getTime();
+                    const timeRemainingSeconds = Math.floor((targetDate - now) / 1000);
+                    
+                    if (timeRemainingSeconds <= 0) {
+                        timerEl.innerText = "00 : 00 : 00";
+                        return;
+                    }
+                    
+                    let d = Math.floor(timeRemainingSeconds / (24 * 3600));
+                    let h = Math.floor((timeRemainingSeconds % (24 * 3600)) / 3600);
+                    let m = Math.floor((timeRemainingSeconds % 3600) / 60);
+                    
+                    let formatH = h < 10 ? '0' + h : h;
+                    let formatM = m < 10 ? '0' + m : m;
+                    timerEl.innerText = `${d} : ${formatH} : ${formatM}`;
+                }, 1000);
+            } else {
+                timerTitle.innerHTML = "Следите за новыми акциями клуба N.L.B";
+                timerEl.innerText = "-- : -- : --";
+            }
+        } catch(e) { console.error("Ошибка загрузки акции"); }
+    }
+});
+
+function logoutUser() {
+    localStorage.removeItem('token');
+    window.location.reload();
+}
+</script>
+
+</body>
+</html>

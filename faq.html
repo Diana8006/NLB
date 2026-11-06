@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+
+        .download-block {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px;
+            border: 1px solid #DDDDDD;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            background-color: #FAFAFA;
+        }
+
+        .download-title {
+            font-size: 20px;
+            font-weight: 400;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .download-desc {
+            font-size: 14px;
+            font-weight: 300;
+            color: #777777;
+            max-width: 400px;
+            line-height: 1.5;
+        }
+
+        .btn-download {
+            background-color: #111111;
+            color: #FFFFFF;
+            padding: 15px 35px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 400;
+            transition: 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            white-space: nowrap;
+        }
+
+        .btn-download:hover {
+            background-color: transparent;
+            color: #111111;
+            border: 1px solid #111111;
+            transform: translateY(-3px); 
+        }
+
+        @media (max-width: 768px) {
+            .download-block {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+                padding: 30px;
+            }
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #FFFFFF; 
+            color: #111111;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        * { box-sizing: border-box; }
+        h1, h2, h3, p { margin: 0; }
+        a { text-decoration: none; color: inherit; }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 80px;
+            height: 100vh;
+            background-color: #2A2828; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding-bottom: 50px;
+            z-index: 9999;
+        }
+
+        .sidebar-text {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 4px;
+            color: #FFFFFF; 
+       text-decoration: none; 
+            pointer-events: auto; 
+            cursor: pointer; 
+            transition: opacity 0.3s ease; 
+        }
+
+        .sidebar-text:hover {
+            opacity: 0.6;
+        }
+
+        .page-wrapper {
+            margin-left: 80px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .top-header {
+            padding: 30px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #FFFFFF;
+            border-bottom: 1px solid #111111;
+        }
+        
+        .nav-links a {
+            margin-right: 40px;
+            font-size: 15px;
+            font-weight: 400;
+            transition: opacity 0.3s;
+        }
+        .nav-links a:hover { opacity: 0.6; }
+        
+        .btn-outline {
+            border: 1px solid #111111;
+            padding: 10px 25px;
+            border-radius: 40px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        .btn-outline:hover { background: #111111; color: #FFFFFF; }
+
+        .faq-section {
+            padding: 50px 60px 100px 60px;
+            flex-grow: 1;
+            display: flex;
+            gap: 60px;
+            align-items: flex-start;
+        }
+
+        .faq-left {
+            width: 40%;
+            position: sticky;
+            top: 50px; 
+        }
+
+        .page-title {
+            font-size: 42px;
+            font-weight: 300; 
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        .faq-desc-block {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .faq-label-col {
+            display: flex;
+            align-items: stretch;
+            gap: 10px;
+        }
+
+        .faq-label {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            color: #FF5A5F; 
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 2px;
+        }
+
+        .faq-line {
+            width: 1px;
+            border-left: 2px dotted #FF5A5F; 
+        }
+
+        .faq-desc {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #333333;
+            font-weight: 400;
+        }
+
+        .faq-image {
+            width: 100%;
+            aspect-ratio: 4 / 5; 
+            object-fit: cover;
+            filter: grayscale(100%);
+        }
+
+        .faq-right {
+            width: 60%;
+            padding-top: 10px;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #DDDDDD; 
+            position: relative; 
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            color: #888888;
+            cursor: pointer;
+            padding: 0 0 15px 0;
+            transition: color 0.3s ease;
+        }
+
+        .tab-btn:hover { color: #111111; }
+        .tab-btn.active { color: #111111; }
+
+        .tab-indicator {
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #FF5A5F;
+            transition: left 0.4s cubic-bezier(0.25, 1, 0.5, 1), width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #111111; 
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #111111; 
+        }
+
+        .faq-question {
+            width: 100%;
+            background: none;
+            border: none;
+            text-align: left;
+            padding: 25px 0;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            color: #111111;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s ease, color 0.3s ease; 
+        }
+
+        .faq-question:hover {
+            color: #555555; 
+            transform: translateX(15px);
+        }
+
+        .faq-icon {
+            font-size: 24px;
+            font-weight: 300;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            color: #111111;
+        }
+
+        .faq-icon {
+            font-size: 24px;
+            font-weight: 300;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            color: #111111;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease, padding 0.4s ease;
+            opacity: 0;
+            font-size: 14px;
+            line-height: 1.6;
+            font-weight: 300;
+            color: #555555; 
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 300px; 
+            padding-bottom: 25px;
+            opacity: 1;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        .footer-section {
+            background-color: #2A2828; 
+            color: #FFFFFF; 
+            padding: 100px 0; 
+            position: relative; 
+            overflow: hidden;
+            margin-top: auto;
+        }
+        
+        .footer-bg-text {
+            position: absolute; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%);
+            font-size: 35vw; 
+            font-weight: 200; 
+            color: #FFFFFF;
+            opacity: 0.04; 
+            z-index: 1; 
+            line-height: 1; 
+            pointer-events: none;
+            white-space: nowrap; 
+        }
+        
+        .footer-grid {
+            position: relative; 
+            z-index: 2; 
+            display: flex; 
+            justify-content: center; 
+            gap: 150px; 
+        }
+        
+        .f-col-left { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 30px; 
+        }
+
+        .f-col-right { 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+        }
+
+        .footer-group { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+        }
+        
+        .footer-section a, .footer-section p { 
+            font-size: 16px; 
+            font-weight: 300; 
+            opacity: 0.8;
+            transition: opacity 0.3s;
+            color: #FFFFFF;
+        }
+        .footer-section a:hover { 
+            opacity: 1; 
+        }
+
+        @media (max-width: 1024px) {
+
+            .faq-section { 
+                flex-direction: column; 
+                gap: 40px; 
+            }
+
+
+            .faq-left, .faq-right { 
+                width: 100%; 
+                position: relative; 
+                top: 0; 
+            }
+
+            .faq-image { 
+                display: none; 
+            }
+            .footer-grid { 
+                gap: 50px; 
+                flex-direction: column; 
+                align-items: center; 
+                text-align: center; 
+            }
+            .filter-tabs { 
+                overflow-x: auto; 
+                white-space: nowrap; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <a href="index.html" class="sidebar-text">N.L.B</a>
+    </aside>
+
+    <div class="page-wrapper">
+        
+        <header class="top-header">
+            <nav class="top-nav">
+                <div class="nav-links">
+                    <a href="index.html">Главная</a>
+                    <a href="tariffs.html">Тарифы</a>
+                    <a href="trainers.html">Тренеры</a>
+                </div>
+            </nav>
+            <a href="tariffs.html" class="btn-outline">Купить подписку</a>
+        </header>
+
+        <main class="faq-section">
+            
+            <div class="faq-left">
+                <h1 class="page-title">ЧАСТО<br>ЗАДАВАЕМЫЕ<br>ВОПРОСЫ</h1>
+                
+                <div class="faq-desc-block">
+                    <div class="faq-label-col">
+                        <span class="faq-label">FAQ</span>
+                        <div class="faq-line"></div>
+                    </div>
+                    <p class="faq-desc">Мы ценим ваше время. Здесь собраны ответы на ключевые вопросы о правилах клуба N.L.B, тарифах и премиальном сервисе.</p>
+                </div>
+
+                <img src="image/image 9 (4).png" alt="Атмосфера клуба" class="faq-image">
+            </div>
+
+            <div class="faq-right">
+                
+                <div class="filter-tabs">
+                    <button class="tab-btn active" data-filter="all">Все вопросы</button>
+                    <button class="tab-btn" data-filter="membership">Членство и тарифы</button>
+                    <button class="tab-btn" data-filter="training">Тренировки и сервис</button>
+                    <div class="tab-indicator" id="faq-indicator"></div>
+                </div>
+<div class="download-block">
+                <div class="download-info">
+                    <h3 class="download-title">РАСПИСАНИЕ ТРЕНИРОВОК</h3>
+                    <p class="download-desc">Актуальный график групповых программ и мастер-классов N.L.B на текущий месяц.</p>
+                </div>
+                
+                <a href="Расписание NLB.pdf" download="Расписание_NLB.pdf" class="btn-download">
+                    Скачать PDF ↓
+                </a>
+            </div>
+                <div class="accordion-list">
+                    
+                    <div class="faq-item" data-category="membership">
+                        <button class="faq-question">
+                            Возможна ли заморозка клубной карты, если я уезжаю?
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            Безусловно. В зависимости от выбранного тарифа вам доступна заморозка клубной карты на срок от 14 до 45 дней. Активировать её можно через личный кабинет на сайте или обратившись к вашему персональному менеджеру.
+                        </div>
+                    </div>
+
+                    <div class="faq-item" data-category="membership">
+                        <button class="faq-question">
+                            Могу ли я передать свою клубную карту другому человеку?
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            Клубная карта является именной, однако мы предусматриваем возможность переоформления резидентства на другое лицо. Эта процедура проводится один раз за срок действия контракта и требует личного присутствия обоих участников.
+                        </div>
+                    </div>
+
+                    <div class="faq-item" data-category="membership">
+                        <button class="faq-question">
+                            Предусмотрены ли корпоративные тарифы для компаний?
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            Да, N.L.B предлагает специальные условия для корпоративного резидентства. Мы разрабатываем индивидуальные программы для компаний, которые заботятся о статусе и здоровье своих сотрудников.
+                        </div>
+                    </div>
+
+                    <div class="faq-item" data-category="training">
+                        <button class="faq-question">
+                            В какое время в зале меньше всего людей?
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            Клуб N.L.B отличается строгим лимитом резидентов, поэтому у нас никогда не бывает толп. Тем не менее, наиболее камерная и спокойная атмосфера для тренировок — это промежутки с 11:00 до 16:00 в будние дни.
+                        </div>
+                    </div>
+
+                    <div class="faq-item" data-category="training">
+                        <button class="faq-question">
+                            Входят ли услуги персонального тренера в стоимость подписки?
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            В стартовый пакет каждого резидента входит одна ознакомительная персональная тренировка. Дальнейшие занятия с личным тренером оплачиваются отдельно и гарантируют вам ювелирную точность в достижении результата.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer-section">
+            <div class="footer-bg-text">N.L.B</div>
+            <div class="footer-grid">
+                <div class="f-col-left">
+                    <a href="index.html">Главная</a>
+                    <a href="tariffs.html">Тарифы</a>
+                    <a href="trainers.html">Тренеры</a>
+                    <a href="faq.html">FAQ</a>
+                </div>
+                <div class="f-col-right">
+                    <div class="footer-group">
+                        <p>Ул. Самарская, д.136</p>
+                        <p>+7 906 831-53-77</p>
+                    </div>
+                    <div class="footer-group">
+                        <p>Будние дни: с 8:00 до 22:00</p>
+                        <p>Выходные дни: с 10:00 до 20:00</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const faqItems = document.querySelectorAll('.faq-item');
+
+            faqItems.forEach(item => {
+                const questionBtn = item.querySelector('.faq-question');
+                
+                questionBtn.addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+                    
+                    faqItems.forEach(otherItem => {
+                        otherItem.classList.remove('active');
+                    });
+
+                    if (!isActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+
+            const tabs = document.querySelectorAll('.tab-btn');
+            const faqIndicator = document.getElementById('faq-indicator');
+
+            function moveIndicator(activeElement) {
+                faqIndicator.style.left = activeElement.offsetLeft + 'px';
+                faqIndicator.style.width = activeElement.offsetWidth + 'px';
+            }
+
+            const defaultActiveTab = document.querySelector('.tab-btn.active');
+            if (defaultActiveTab) {
+                moveIndicator(defaultActiveTab);
+            }
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    moveIndicator(tab);
+
+                    const filterValue = tab.getAttribute('data-filter');
+
+                    faqItems.forEach(item => {
+                        item.classList.remove('active'); 
+
+                        if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            window.addEventListener('resize', () => {
+                const currentActive = document.querySelector('.tab-btn.active');
+                if (currentActive) moveIndicator(currentActive);
+            });
+        });
+
+
+
+    (function() {
+        const MAX_CLICKS = 5; 
+        const CLICK_TIME_WINDOW = 2000; 
+        const MAX_MOUSE_SPEED = 4000; 
+
+        let clickCount = 0;
+        let lastClickTime = Date.now();
+
+        document.addEventListener('click', () => {
+            const now = Date.now();
+            
+            if (now - lastClickTime > CLICK_TIME_WINDOW) {
+                clickCount = 0; 
+            }
+            
+            clickCount++;
+            lastClickTime = now;
+
+            if (clickCount >= MAX_CLICKS) {
+                triggerSecurityRedirect("Обнаружено аномальное количество кликов");
+            }
+        });
+
+        let lastMouseX = -1;
+        let lastMouseY = -1;
+        let lastMouseTime = -1;
+
+        document.addEventListener('mousemove', (e) => {
+            if (lastMouseTime === -1) {
+                lastMouseX = e.pageX;
+                lastMouseY = e.pageY;
+                lastMouseTime = Date.now();
+                return;
+            }
+
+            const now = Date.now();
+            const timeDiff = now - lastMouseTime;
+
+            if (timeDiff > 100) {
+                const distance = Math.sqrt(Math.pow(e.pageX - lastMouseX, 2) + Math.pow(e.pageY - lastMouseY, 2));
+                const speed = (distance / timeDiff) * 1000; 
+
+                if (speed > MAX_MOUSE_SPEED) {
+                    triggerSecurityRedirect("Обнаружено слишком быстрое движение курсора");
+                }
+
+                lastMouseX = e.pageX;
+                lastMouseY = e.pageY;
+                lastMouseTime = now;
+            }
+        });
+
+        function triggerSecurityRedirect(reason) {
+            console.warn("Сработала защита:", reason);
+            
+            window.location.href = '404.html';
+        }
+    })();
+
+
+    let isOnline = navigator.onLine;
+let pingInterval;
+
+
+function updateOnlineStatus(status) {
+    const toast = document.getElementById('offline-toast');
+    const dot = toast.querySelector('.offline-dot');
+    const text = document.getElementById('offline-text');
+
+    if (status) {
+        if (!isOnline) { 
+           
+            dot.classList.add('online');
+            text.innerText = 'Подключение восстановлено!';
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        isOnline = true;
+        setPingInterval(5000);
+    } else {
+        if (isOnline) {
+            dot.classList.remove('online');
+            text.innerText = 'Нет подключения к сети. Проверьте интернет.';
+            toast.classList.add('show');
+        }
+        isOnline = false;
+        setPingInterval(1000); 
+    }
+}
+
+
+window.addEventListener('online', () => {
+    updateOnlineStatus(true);
+    checkActualInternet();
+});
+
+window.addEventListener('offline', () => {
+    updateOnlineStatus(false);
+});
+
+setPingInterval(5000);
+
+    </script>
+</body>
+</html>
