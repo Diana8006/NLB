@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N.L.B | Панель управления</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+    <style>
+        body, html { margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; background-color: #111111; color: #FFFFFF; height: 100vh; overflow: hidden; }
+        
+        /* Авторизация */
+        #auth-guard { position: fixed; inset: 0; background: #111; z-index: 100; display: flex; justify-content: center; align-items: center; flex-direction: column; }
+        .nlb-input { padding: 15px; width: 300px; margin-bottom: 15px; background: transparent; border: 1px solid #555; color: #FFF; outline: none; font-family: inherit; }
+        .nlb-btn { width: 332px; padding: 15px; background: #FFF; color: #111; border: none; cursor: pointer; font-family: inherit; font-weight: 500; transition: 0.3s; }
+        .nlb-btn:hover { background: #DDDDDD; }
+        
+        /* Дашборд */
+        #admin-dashboard { display: none; height: 100vh; display: flex; }
+        .admin-sidebar { width: 250px; background-color: #1A1A1A; border-right: 1px solid #333; display: flex; flex-direction: column; padding: 30px 0; }
+        .sidebar-logo { font-size: 24px; font-weight: 300; letter-spacing: 5px; text-align: center; margin-bottom: 50px; color: #FFF; }
+        .tab-btn { background: none; border: none; color: #888; padding: 20px 30px; text-align: left; font-size: 15px; cursor: pointer; font-family: inherit; transition: 0.3s; border-left: 3px solid transparent; }
+        .tab-btn:hover { color: #FFF; background-color: rgba(255,255,255,0.05); }
+        .tab-btn.active { color: #FFF; border-left-color: #FF5A5F; background-color: rgba(255,255,255,0.05); }
+        .sidebar-bottom { margin-top: auto; padding: 0 30px; }
+        
+        .admin-content { flex-grow: 1; padding: 50px; overflow-y: auto; }
+        .tab-panel { display: none; animation: fadeIn 0.4s; }
+        .tab-panel.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .panel-title { font-weight: 200; font-size: 32px; margin-bottom: 30px; text-transform: uppercase; }
+        
+        /* Таблицы */
+        .data-table { width: 100%; border-collapse: collapse; background-color: #1A1A1A; }
+        .data-table th, .data-table td { border-bottom: 1px solid #333; padding: 18px 20px; text-align: left; font-weight: 300; font-size: 14px; }
+        .data-table th { color: #888; font-weight: 400; text-transform: uppercase; letter-spacing: 1px; font-size: 12px; }
+        
+        /* Форма акции */
+        .promo-card { background-color: #1A1A1A; padding: 40px; border: 1px solid #333; max-width: 500px; }
+        .promo-card label { display: block; margin-bottom: 10px; color: #888; font-size: 13px; text-transform: uppercase; }
+        .promo-card .nlb-input { width: 100%; box-sizing: border-box; margin-bottom: 25px; }
+        .success-msg { color: #4CAF50; margin-top: 15px; display: none; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+    <!-- АВТОРИЗАЦИЯ -->
+    <div id="auth-guard">
+        <h2 style="font-weight: 300; margin-bottom: 30px; letter-spacing: 2px;">N.L.B ADMIN</h2>
+        <input type="text" id="admin-login" class="nlb-input" placeholder="Логин">
+        <input type="password" id="admin-pass" class="nlb-input" placeholder="Пароль">
+        <button onclick="adminLogin()" class="nlb-btn">ВОЙТИ</button>
+        <p id="admin-err" style="color: #FF5A5F; margin-top: 15px; display: none;">Неверный доступ</p>
+    </div>
+
+    <div id="admin-dashboard" style="display: none;">
+        
+        <div class="admin-sidebar">
+            <div class="sidebar-logo">N.L.B</div>
+            <button class="tab-btn active" onclick="switchTab('users')">Резиденты</button>
+            <button class="tab-btn" onclick="switchTab('transactions')">Транзакции<button>
+            <button class="tab-btn" onclick="switchTab('promo')">Таймер акций</button>
+            
+            <div class="sidebar-bottom">
+                <button class="nlb-btn" style="width: 100%; background: transparent; border: 1px solid #555; color: #FFF;" onclick="adminLogout()">ВЫЙТИ</button>
+            </div>
+        </div>
+
+        <div class="admin-content">
+            
+            <!-- Вкладка: Резиденты -->
+            <div id="tab-users" class="tab-panel active">
+                <h1 class="panel-title">Резиденты клуба</h1>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Имя Фамилия</th>
+                            <th>Телефон</th>
+                            <th>Дата регистрации</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-table-body"></tbody>
+                </table>
+            </div>
+
+            <!-- Вкладка: Транзакции -->
+            <div id="tab-transactions" class="tab-panel">
+                <h1 class="panel-title">Финансовые операции</h1>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Резидент</th>
+                            <th>Тариф</th>
+                            <th>Сумма</th>
+                            <th>Дата оплаты</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactions-table-body"></tbody>
+                </table>
+            </div>
+
+            <!-- Вкладка: Таймер -->
+            <div id="tab-promo" class="tab-panel">
+                <h1 class="panel-title">Управление акциями</h1>
+                <div class="promo-card">
+                    <label>Текст над таймером</label>
+                    <input type="text" id="promo-title" class="nlb-input" placeholder="Например: Скидка 50% на бар">
+                    
+                    <label>Размер скидки (%)</label>
+                    <input type="number" id="promo-discount" class="nlb-input" placeholder="20">
+                    
+                    <label>Дата окончания акции</label>
+                    <input type="datetime-local" id="promo-end" class="nlb-input">
+                    
+                    <button class="nlb-btn" style="width: 100%;" onclick="launchPromo()">Запустить таймер</button>
+                    <div id="promo-success" class="success-msg">Акция успешно запущена! Проверьте главную страницу.</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        window.onload = () => {
+            const token = localStorage.getItem('token');
+            if(token) loadDashboard();
+        }
+
+        async function adminLogin() {
+            const u = document.getElementById('admin-login').value;
+            const p = document.getElementById('admin-pass').value;
+            const res = await fetch('/login', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({username: u, password: p})
+            });
+            const data = await res.json();
+            if(data.success && data.role === 1) {
+                localStorage.setItem('token', data.token);
+                loadDashboard();
+            } else {
+                document.getElementById('admin-err').style.display = 'block';
+            }
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        async function loadDashboard() {
+            const token = localStorage.getItem('token');
+            
+            // Загрузка пользователей
+            const resUsers = await fetch('/api/admin/users', { headers: {'Authorization': 'Bearer ' + token} });
+            const dataUsers = await resUsers.json();
+            
+            if(dataUsers.success) {
+                document.getElementById('auth-guard').style.display = 'none';
+                document.getElementById('admin-dashboard').style.display = 'flex';
+                
+                const tbody = document.getElementById('users-table-body');
+                tbody.innerHTML = '';
+                dataUsers.data.forEach(user => {
+                    tbody.innerHTML += `<tr><td>#${user.ID_user}</td><td>${user.First_name} ${user.Last_name}</td><td>${user.Phone}</td><td>${new Date(user.Registration_date).toLocaleDateString('ru-RU')}</td></tr>`;
+                });
+            } else {
+                adminLogout();
+            }
+
+            // Загрузка транзакций
+            const resTrans = await fetch('/api/admin/transactions', { headers: {'Authorization': 'Bearer ' + token} });
+            const dataTrans = await resTrans.json();
+            if(dataTrans.success) {
+                const tbodyTrans = document.getElementById('transactions-table-body');
+                tbodyTrans.innerHTML = '';
+                dataTrans.data.forEach(t => {
+                    tbodyTrans.innerHTML += `<tr><td>#${t.ID_transaction}</td><td>${t.First_name} ${t.Last_name}</td><td>${t.TariffName}</td><td>${t.Amount} ₽</td><td>${new Date(t.Payment_date).toLocaleDateString('ru-RU')}</td></tr>`;
+                });
+            }
+        }
+
+        async function launchPromo() {
+            const token = localStorage.getItem('token');
+            const title = document.getElementById('promo-title').value;
+            const discount = document.getElementById('promo-discount').value;
+            const endDate = document.getElementById('promo-end').value;
+
+            if(!title || !endDate) return alert("Заполните текст и дату окончания");
+
+            const res = await fetch('/api/admin/promo', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+                body: JSON.stringify({ title, discount: discount || 0, endDate })
+            });
+            const data = await res.json();
+            if(data.success) {
+                document.getElementById('promo-success').style.display = 'block';
+                setTimeout(() => document.getElementById('promo-success').style.display = 'none', 4000);
+            }
+        }
+
+        function adminLogout() {
+            localStorage.removeItem('token');
+            window.location.reload();
+        }
+    </script>
+</body>
+</html>/butto
