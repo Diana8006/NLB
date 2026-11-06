@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тарифы</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        font-family: 'Montserrat', sans-serif;
+        background-color: #FFFFFF; 
+        color: #111111;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    * { box-sizing: border-box; }
+    h1, h2, h3, p, ul { margin: 0; }
+    a { text-decoration: none; color: inherit; }
+
+    .sidebar-fixed {
+        position: fixed;
+        top: 0; left: 0;
+        width: 80px; height: 100vh;
+        z-index: 9999; pointer-events: none; 
+        color: #111111; transition: color 0.3s ease;
+    }
+    
+    .sidebar-line {
+        position: absolute;
+        top: 0; right: 0;
+        width: 1px; bottom: 0; 
+        background-color: rgba(0, 0, 0, 0.3); 
+        transition: opacity 0.3s ease;
+    }
+
+    .sidebar-text {
+        position: absolute;
+        bottom: 50px; left: 50%;
+        transform: translateX(-50%) rotate(180deg);
+        writing-mode: vertical-rl;
+        font-size: 15px; font-weight: 500;
+        letter-spacing: 4px; text-decoration: none; 
+        pointer-events: auto; cursor: pointer;
+        transition: opacity 0.3s ease; 
+    }
+    .sidebar-text:hover { opacity: 0.6; }
+    .sidebar-fixed.dark-mode { color: #FFFFFF; }
+    .sidebar-fixed.dark-mode .sidebar-line { opacity: 0; }
+    
+    .hero-section {
+        position: sticky;
+        top: 0; width: 100%; min-height: 100vh; 
+        background: url(image/Gemini_Generated_Image_uw45gpuw45gpuw45\ 1.png) right 10% / cover no-repeat;
+        display: flex; flex-direction: column;
+        padding: 40px 80px 40px 160px; 
+        color: #111111; z-index: 1;
+    }
+    
+    .top-nav { display: flex; align-items: center; }
+    .nav-links a { margin-right: 40px; font-size: 15px; font-weight: 400; transition: opacity 0.3s; }
+    .nav-links a:hover { opacity: 0.6; }
+        
+    .btn-outline {
+        margin-left: auto;
+        border: 1px solid #111111;
+        padding: 12px 30px; border-radius: 40px;
+        font-size: 14px; transition: 0.3s;
+    }
+    .btn-outline:hover { background: #111111; color: #FFFFFF; }
+    
+    .hero-content { margin-top: 15vh; margin-bottom: auto; max-width: 600px; }
+    .hero-subtitle { font-size: 22px; font-weight: 400; line-height: 1.4; margin-bottom: 20px; }
+    .timer-digits { font-size: 80px; font-weight: 200; letter-spacing: -2px; }
+
+    .content-layer {
+        position: relative; z-index: 10; width: 100%;
+        box-shadow: 0 -20px 40px rgba(0,0,0,0.2);
+    }
+
+    .sidebar-solid-bg {
+        position: absolute;
+        top: 0; left: 0; bottom: 0; width: 80px;
+        background-color: #2A2828;
+        border-right: 1px solid rgba(0,0,0,0.2); z-index: 11;
+    }
+    
+    .sections-wrapper { margin-left: 80px; position: relative; z-index: 12; background-color: #FFFFFF; }
+    
+    .tariffs-section { padding: 80px; }
+    .section-title { margin-top: -30px; font-size: 60px; font-weight: 300; margin-bottom: 40px; letter-spacing: 1px; text-transform: uppercase; }
+    
+    .tariffs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    .tariff-card { border: 1px solid #111111; padding: 50px 40px; display: flex; flex-direction: column; height: 100%; }
+    
+    .card-dark { background-color: #2A2A2A; color: #FFFFFF; border: none; }
+    .card-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 20px; }
+    .card-title { font-size: 26px; font-weight: 400; letter-spacing: 1px; }
+    .card-price { font-size: 16px; font-weight: 300; }
+    .card-desc { font-size: 15px; line-height: 1.5; font-weight: 400; margin-bottom: 40px; opacity: 0.9; }
+
+    .features-list { list-style: none; padding: 0; margin-bottom: 50px; }
+    .features-list li { display: flex; align-items: flex-start; margin-bottom: 20px; font-size: 16px; font-weight: 400; line-height: 1.4; }
+    .check-icon { min-width: 22px; height: 22px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-right: 15px; font-size: 12px; margin-top: 2px; }
+
+    .btn-buy-light {
+        display: block; width: 100%; background-color: #FFFFFF; color: #111111;
+        text-align: center; padding: 18px 0; margin-top: auto; 
+        font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 500; transition: 0.3s;
+    }
+    .btn-buy-light:hover { background-color: #E0E0E0; }
+
+    .btn-buy-dark {
+        display: block; width: 100%; background-color: #2A2828; color: #FFFFFF;
+        text-align: center; padding: 18px 0; margin-top: auto;
+        font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 500; transition: 0.3s;
+    }
+    .btn-buy-dark:hover { background-color: #111111; }
+        
+    .card-dark .check-icon { background-color: #FFFFFF; color: #2A2A2A; }
+    .card-light .check-icon { background-color: #2A2A2A; color: #FFFFFF; }
+
+    .footer-section { background-color: #2A2828; color: #FFFFFF; padding: 100px 0; position: relative; overflow: hidden; }
+    .footer-bg-text {
+        position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+        font-size: 33vw; font-weight: 300; color: #FFFFFF; opacity: 0.06; z-index: 1; line-height: 0.8; pointer-events: none; white-space: nowrap; 
+    }
+    .footer-grid { position: relative; z-index: 2; display: flex; justify-content: center; gap: 150px; }
+    .f-col-left { display: flex; flex-direction: column; gap: 30px; }
+    .f-col-right { display: flex; flex-direction: column; justify-content: space-between; }
+    .footer-group { display: flex; flex-direction: column; gap: 15px; }
+    .footer-section a, .footer-section p { font-size: 16px; font-weight: 300; opacity: 0.8; transition: opacity 0.3s; }
+    .footer-section a:hover { opacity: 1; }
+
+    @media (max-width: 1024px) {
+        .tariffs-grid { grid-template-columns: 1fr; }
+        .timer-digits { font-size: 60px; }
+        .footer-grid { gap: 50px; flex-direction: column; align-items: center; text-align: center; }
+    }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar-fixed" id="sidebar">
+        <div class="sidebar-line"></div>
+        <a href="index.html" class="sidebar-text" id="sidebar-label">N.L.B</a>
+    </aside>
+
+    <section class="hero-section">
+        <nav class="top-nav">
+            <div class="nav-links">
+                <a href="index.html">Главная</a>
+                <a href="trainers.html">Тренеры</a>
+                <a href="faq.html">FAQ</a>
+            </div>
+            <a href="tariffs.html" class="btn-outline">Купить подписку</a>
+        </nav>
+        <div class="hero-content">
+            <div class="hero-subtitle">Следите за новыми акциями клуба N.L.B</div>
+            <div class="timer-digits" id="live-timer">-- : -- : --</div>
+        </div>
+    </section>
+
+    <div class="content-layer">
+        <div class="sidebar-solid-bg" id="solid-sidebar-bg"></div>
+
+        <div class="sections-wrapper">
+            <section class="tariffs-section">
+                <h1 class="section-title">ТАРИФЫ</h1>
+
+                <div class="tariffs-grid">
+                    
+                    <div class="tariff-card card-dark">
+                        <div class="card-header">
+                            <div class="card-title">N.L.B BLACK</div>
+                            <div class="card-price">2999₽/мес</div>
+                        </div>
+                        <p class="card-desc">Флагманская карта клуба. Никаких лимитов, полный доступ ко всем ресурсам N.L.B и премиальный сервис.</p>
+                        <ul class="features-list">
+                            <li><span class="check-icon">✔</span> All-Access</li>
+                            <li><span class="check-icon">✔</span> VIP-комфорт</li>
+                            <li><span class="check-icon">✔</span> Персональный тренинг</li>
+                        </ul>
+                        <a href="checkout.html?plan=black" class="btn-buy-light">Купить</a>
+                    </div>
+
+                    <div class="tariff-card card-light">
+                        <div class="card-header">
+                            <div class="card-title">CORE</div>
+                            <div class="card-price">1999₽/мес</div>
+                        </div>
+                        <p class="card-desc">Идеально для тех, кто сфокусирован на самостоятельной работе, силовом прогрессе и кардио.</p>
+                        <ul class="features-list">
+                            <li><span class="check-icon">✔</span> Доступ к силовой зоне</li>
+                            <li><span class="check-icon">✔</span> Кардио-палуба</li>
+                            <li><span class="check-icon">✔</span> Зона ударной техники</li>
+                            <li><span class="check-icon">✔</span> Сервис: питьевая вода, доступ в комфортные раздевалки.</li>
+                        </ul>
+                        <a href="checkout.html?plan=core" class="btn-buy-dark">Купить</a>
+                    </div>
+
+                    <div class="tariff-card card-light">
+                        <div class="card-header">
+                            <div class="card-title">BALANCE</div>
+                            <div class="card-price">2200₽/мес</div>
+                        </div>
+                        <p class="card-desc">Выбор тех, кто предпочитает сочетать тренажерный зал с глубокой растяжкой и осознанными практиками.</p>
+                        <ul class="features-list"> 
+                            <li><span class="check-icon">✔</span> Всё, что входит в тариф CORE.</li>
+                            <li><span class="check-icon">✔</span> Камерная студия йоги</li>
+                            <li><span class="check-icon">✔</span> Аэройога</li>
+                            <li><span class="check-icon">✔</span> Приоритетная запись на групповые классы через консьерж-сервис.</li>
+                        </ul>
+                        <a href="checkout.html?plan=balance" class="btn-buy-dark">Купить</a>
+                    </div>
+
+                    <div class="tariff-card card-light">
+                        <div class="card-header">
+                            <div class="card-title">STRIKE</div>
+                            <div class="card-price">2600₽/мес</div>
+                        </div>
+                        <p class="card-desc">Специальный тариф для тех, кому нужен адреналин, техника и выносливость.</p>
+                        <ul class="features-list">
+                            <li><span class="check-icon">✔</span> Всё, что входит в тариф CORE.</li>
+                            <li><span class="check-icon">✔</span> Доступ на боксерский ринг</li>
+                            <li><span class="check-icon">✔</span> Бесплатная аренда премиальной экипировки на время тренировки.</li>
+                        </ul>
+                        <a href="checkout.html?plan=strike" class="btn-buy-dark">Купить</a>
+                    </div>
+
+                </div>
+            </section>
+
+            <footer class="footer-section">
+                <div class="footer-bg-text">N.L.B</div>
+                <div class="footer-grid">
+                    <div class="f-col-left">
+                        <a href="index.html">Главная</a>
+                        <a href="tariffs.html">Тарифы</a>
+                        <a href="trainers.html">Тренеры</a>
+                        <a href="faq.html">FAQ</a>
+                    </div>
+                    <div class="f-col-right">
+                        <div class="footer-group">
+                            <p>Ул. Самарская, д.136</p>
+                            <p>+7 906 831-53-77</p>
+                        </div>
+                        <div class="footer-group">
+                            <p>Будние дни: с 8:00 до 22:00</p>
+                            <p>Выходные дни: с 10:00 до 20:00</p>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Всплывающее окно оффлайна -->
+    <div id="offline-toast" class="offline-toast" style="display: none;">
+        <div class="offline-dot"></div>
+        <span id="offline-text">Нет подключения к сети.</span>
+    </div>
+
+    <script>
+        // Анимация боковой панели
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebarFixed = document.getElementById('sidebar');
+            const sidebarText = document.getElementById('sidebar-label');
+            const solidBg = document.getElementById('solid-sidebar-bg');
+
+            if(sidebarText && solidBg) {
+                window.addEventListener('scroll', () => {
+                    const textRect = sidebarText.getBoundingClientRect();
+                    const textCenterY = textRect.top + (textRect.height / 2);
+                    const solidBgRect = solidBg.getBoundingClientRect();
+
+                    if (textCenterY >= solidBgRect.top) {
+                        sidebarFixed.classList.add('dark-mode');
+                    } else {
+                        sidebarFixed.classList.remove('dark-mode');
+                    }
+                });
+            }
+        });
+
+       
+        (function() {
+            const MAX_CLICKS = 5; 
+            const CLICK_TIME_WINDOW = 2000; 
+            const MAX_MOUSE_SPEED = 4000; 
+
+            let clickCount = 0;
+            let lastClickTime = Date.now();
+            let lastMouseX = -1;
+            let lastMouseY = -1;
+            let lastMouseTime = -1;
+
+            document.addEventListener('click', () => {
+                const now = Date.now();
+                if (now - lastClickTime > CLICK_TIME_WINDOW) clickCount = 0; 
+                clickCount++;
+                lastClickTime = now;
+                if (clickCount >= MAX_CLICKS) triggerSecurityRedirect("Обнаружено аномальное количество кликов");
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (lastMouseTime === -1) {
+                    lastMouseX = e.pageX; lastMouseY = e.pageY; lastMouseTime = Date.now();
+                    return;
+                }
+                const now = Date.now();
+                const timeDiff = now - lastMouseTime;
+
+                if (timeDiff > 100) {
+                    const distance = Math.sqrt(Math.pow(e.pageX - lastMouseX, 2) + Math.pow(e.pageY - lastMouseY, 2));
+                    const speed = (distance / timeDiff) * 1000; 
+                    if (speed > MAX_MOUSE_SPEED) triggerSecurityRedirect("Обнаружено слишком быстрое движение курсора");
+                    lastMouseX = e.pageX; lastMouseY = e.pageY; lastMouseTime = now;
+                }
+            });
+
+            function triggerSecurityRedirect(reason) {
+                console.warn("Сработала защита:", reason);
+                window.location.href = '404.html';
+            }
+        })();
+
+        // Динамический таймер акций из БД
+        document.addEventListener('DOMContentLoaded', async () => {
+            const timerTitle = document.querySelector('.hero-subtitle'); 
+            const timerEl = document.getElementById('live-timer');
+            
+            if (timerEl && timerTitle) {
+                try {
+                    const res = await fetch('/api/promo');
+                    const promo = await res.json();
+                    
+                    if (promo.success && promo.data) {
+                        timerTitle.innerHTML = promo.data.Title + ' действуют еще:';
+                        const targetDate = new Date(promo.data.End_date).getTime();
+                        
+                        setInterval(() => {
+                            const now = new Date().getTime();
+                            const timeRemainingSeconds = Math.floor((targetDate - now) / 1000);
+                            
+                            if (timeRemainingSeconds <= 0) {
+                                timerEl.innerText = "00 : 00 : 00";
+                                return;
+                            }
+                            
+                            let d = Math.floor(timeRemainingSeconds / (24 * 3600));
+                            let h = Math.floor((timeRemainingSeconds % (24 * 3600)) / 3600);
+                            let m = Math.floor((timeRemainingSeconds % 3600) / 60);
+                            let s = timeRemainingSeconds % 60;
+                            
+                            let formatH = h < 10 ? '0' + h : h;
+                            let formatM = m < 10 ? '0' + m : m;
+                            let formatS = s < 10 ? '0' + s : s;
+                            
+                            if(d > 0) {
+                                timerEl.innerText = `${d} : ${formatH} : ${formatM}`;
+                            } else {
+                                timerEl.innerText = `${formatH} : ${formatM} : ${formatS}`;
+                            }
+                            
+                        }, 1000);
+                    } else {
+                        timerTitle.innerHTML = "Следите за новыми акциями клуба N.L.B";
+                        timerEl.innerText = "-- : -- : --";
+                    }
+                } catch(e) { console.error("Ошибка загрузки акции", e); }
+            }
+        });
+    </script>
+</body>
+</html>
