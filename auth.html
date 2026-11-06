@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход и Регистрация | N.L.B</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0; padding: 0; 
+            font-family: 'Montserrat', sans-serif;
+            background-color: #111111; /* Темный фон для премиальности */
+            height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            color: #111111;
+        }
+        .auth-container {
+            background-color: #FFFFFF;
+            width: 100%;
+            max-width: 500px;
+            padding: 50px;
+            border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        .back-link {
+            position: absolute;
+            top: -40px; left: 0;
+            color: #FFFFFF;
+            font-size: 13px;
+            text-transform: uppercase;
+            text-decoration: none;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            transition: 0.3s;
+        }
+        .back-link:hover { opacity: 1; }
+        
+        .step-title { font-size: 32px; font-weight: 300; margin-bottom: 30px; text-transform: uppercase; text-align: center; }
+        
+        .auth-tabs { display: flex; gap: 30px; border-bottom: 1px solid #DDDDDD; margin-bottom: 30px; justify-content: center;}
+        .auth-tab { padding-bottom: 10px; font-size: 16px; color: #AAAAAA; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
+        .auth-tab.active { color: #111111; border-bottom: 2px solid #111111; font-weight: 500; }
+        
+        .auth-form { display: none; }
+        .auth-form.active { display: block; animation: fadeIn 0.4s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .input-group { margin-bottom: 25px; position: relative; }
+        .input-row { display: flex; gap: 20px; }
+        
+        .nlb-input {
+            width: 100%; border: none; border-bottom: 1px solid #DDDDDD; padding: 12px 0;
+            font-family: inherit; font-size: 15px; background: transparent; outline: none; transition: 0.3s;
+        }
+        .nlb-input:focus { border-bottom-color: #111111; }
+        .nlb-input::placeholder { color: #AAAAAA; font-weight: 300; }
+        .nlb-input.error { border-bottom-color: #FF5A5F; }
+        
+        .error-msg { color: #FF5A5F; font-size: 11px; position: absolute; bottom: -16px; left: 0; display: none; }
+        
+        .btn-solid {
+            background-color: #111111; color: #FFFFFF; border: none; width: 100%; padding: 18px 0; 
+            font-family: inherit; font-size: 15px; font-weight: 500; cursor: pointer; transition: 0.3s; margin-top: 10px;
+        }
+        .btn-solid:hover { background-color: #333333; }
+    </style>
+</head>
+<body>
+
+    <div class="auth-container">
+        <a href="index.html" class="back-link">← Вернуться на главную</a>
+        <h1 class="step-title">N.L.B</h1>
+        
+        <div class="auth-tabs">
+            <div class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Вход</div>
+            <div class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">Регистрация</div>
+        </div>
+
+        <!-- ФОРМА ВХОДА -->
+        <div class="auth-form active" id="form-login">
+            <div class="input-group">
+                <input type="text" id="login-username" class="nlb-input" placeholder="Логин">
+                <span class="error-msg" id="err-login-username"></span>
+            </div>
+            <div class="input-group">
+                <input type="password" id="login-password" class="nlb-input" placeholder="Пароль">
+                <span class="error-msg" id="err-login-password"></span>
+            </div>
+            <button class="btn-solid" onclick="loginUser()">Войти</button>
+        </div>
+
+        <!-- ФОРМА РЕГИСТРАЦИИ -->
+        <div class="auth-form" id="form-register">
+            <div class="input-row">
+                <div class="input-group" style="width: 50%;">
+                    <input type="text" id="reg-firstname" class="nlb-input" placeholder="Имя">
+                    <span class="error-msg" id="err-reg-firstname"></span>
+                </div>
+                <div class="input-group" style="width: 50%;">
+                    <input type="text" id="reg-lastname" class="nlb-input" placeholder="Фамилия">
+                    <span class="error-msg" id="err-reg-lastname"></span>
+                </div>
+            </div>
+            
+            <div class="input-row">
+                <div class="input-group" style="width: 50%;">
+                    <input type="tel" id="reg-phone" class="nlb-input" placeholder="Телефон">
+                    <span class="error-msg" id="err-reg-phone"></span>
+                </div>
+                <div class="input-group" style="width: 50%;">
+                    <input type="date" id="reg-dob" class="nlb-input" required>
+                    <span class="error-msg" id="err-reg-dob"></span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <input type="text" id="reg-username" class="nlb-input" placeholder="Придумайте логин">
+                <span class="error-msg" id="err-reg-username"></span>
+            </div>
+            <div class="input-group">
+                <input type="password" id="reg-password" class="nlb-input" placeholder="Пароль (минимум 8 символов)">
+                <span class="error-msg" id="err-reg-password"></span>
+            </div>
+
+            <button class="btn-solid" onclick="registerUser()">Создать аккаунт</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if(window.location.hash === '#register') switchAuthTab('register');
+            else switchAuthTab('login');
+
+            if (localStorage.getItem('token')) {
+                window.location.href = 'index.html'; // Если уже авторизован, кидаем на главную
+            }
+        });
+
+        function switchAuthTab(tab) {
+            document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.nlb-input.error').forEach(el => el.classList.remove('error'));
+            
+            document.getElementById('tab-login').classList.remove('active');
+            document.getElementById('tab-register').classList.remove('active');
+            document.getElementById('form-login').classList.remove('active');
+            document.getElementById('form-register').classList.remove('active');
+            
+            document.getElementById('tab-' + tab).classList.add('active');
+            document.getElementById('form-' + tab).classList.add('active');
+        }
+
+        function showError(inputId, message) {
+            const input = document.getElementById(inputId);
+            const errSpan = document.getElementById('err-' + inputId);
+            input.classList.add('error');
+            errSpan.innerText = message;
+            errSpan.style.display = 'block';
+        }
+
+        async function loginUser() {
+            const user = document.getElementById('login-username').value.trim();
+            const pass = document.getElementById('login-password').value.trim();
+            if (!user || !pass) return showError('login-password', 'Заполните все поля');
+
+            try {
+                const res = await fetch('/login', { 
+                    method: 'POST', body: JSON.stringify({ username: user, password: pass }), 
+                    headers: {'Content-Type': 'application/json'} 
+                });
+                const result = await res.json();
+                
+                if (result.success) {
+                    localStorage.setItem('token', result.token);
+                    if(result.role === 1) window.location.href = '/admin';
+                    else window.location.href = 'index.html'; // Возврат на главную
+                } else {
+                    showError('login-password', result.message || 'Ошибка входа');
+                }
+            } catch (error) {
+                alert('Ошибка соединения с сервером.');
+            }
+        }
+
+        async function registerUser() {
+            const fName = document.getElementById('reg-firstname').value.trim();
+            const lName = document.getElementById('reg-lastname').value.trim();
+            const phone = document.getElementById('reg-phone').value.trim();
+            const dob = document.getElementById('reg-dob').value;
+            const user = document.getElementById('reg-username').value.trim();
+            const pass = document.getElementById('reg-password').value.trim();
+
+            if(!user || pass.length < 8) return showError('reg-password', 'Логин обязателен, пароль от 8 символов');
+
+            try {
+                const res = await fetch('/register', { 
+                    method: 'POST', 
+                    body: JSON.stringify({ firstName: fName, lastName: lName, phone: phone, dob: dob, username: user, password: pass }), 
+                    headers: {'Content-Type': 'application/json'} 
+                });
+                const result = await res.json();
+                
+                if (result.success) {
+                    localStorage.setItem('token', result.token);
+                    window.location.href = 'index.html'; 
+                } else {
+                    showError('reg-username', result.message || 'Ошибка регистрации');
+                }
+            } catch (error) {
+                alert('Ошибка соединения с сервером.');
+            }
+        }
+    </script>
+</body>
+</html>
