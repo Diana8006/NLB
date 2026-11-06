@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оформление резидентства | N.L.B</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body, html {
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Montserrat', sans-serif;
+            background-color: #FFFFFF; 
+            color: #111111; 
+            height: 100vh; 
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        * { 
+            box-sizing: border-box; 
+        }
+        
+        h1, h2, h3, p { 
+            margin: 0; 
+        }
+        
+        a { 
+            text-decoration: none; 
+            color: inherit; 
+        }
+
+        .sidebar {
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 80px; 
+            height: 100vh;
+            border-right: 1px solid rgba(0,0,0,0.1);
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: flex-end;
+            padding-bottom: 50px; 
+            z-index: 10; 
+            background-color: #FFFFFF;
+        }
+
+        .sidebar-text {
+            writing-mode: vertical-rl; 
+            transform: rotate(180deg);
+            font-size: 15px; 
+            font-weight: 500; 
+            letter-spacing: 4px; 
+            color: #111111;
+            cursor: pointer; 
+            transition: 0.3s;
+        }
+
+        .sidebar-text:hover { 
+            opacity: 0.5; 
+        }
+
+        .checkout-wrapper { 
+            margin-left: 80px; 
+            display: flex; 
+            height: 100vh; 
+        }
+
+        .checkout-left { 
+            flex-grow: 1; 
+            padding: 60px 100px; 
+            overflow-y: auto; 
+            position: relative; 
+        }
+
+        .step-container {
+            max-width: 480px; 
+            margin-top: 50px; 
+            display: none;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .step-container.active { 
+            display: block; 
+        }
+
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        .step-title { 
+            font-size: 32px; 
+            font-weight: 300; 
+            margin-bottom: 10px; 
+            text-transform: uppercase; 
+        }
+
+        .step-desc { 
+            font-size: 14px; 
+            font-weight: 300; 
+            color: #777777; 
+            margin-bottom: 40px; 
+            line-height: 1.5; 
+        }
+
+        .auth-tabs {
+            display: flex; 
+            gap: 30px; 
+            border-bottom: 1px solid #DDDDDD; 
+            margin-bottom: 30px;
+        }
+
+        .auth-tab {
+            padding-bottom: 10px; 
+            font-size: 16px; 
+            font-weight: 400; 
+            color: #AAAAAA; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+        }
+
+        .auth-tab.active {
+            color: #111111; 
+            border-bottom: 2px solid #111111; 
+            font-weight: 500;
+        }
+
+        .auth-form {
+            display: none; 
+        }
+
+        .auth-form.active { 
+            display: block; 
+            animation: fadeIn 0.4s ease forwards; 
+        }
+
+        .input-group { 
+            margin-bottom: 25px; 
+            position: relative; 
+        }
+
+        .input-row { 
+            display: flex; 
+            gap: 20px; 
+        }
+
+        .nlb-input {
+            width: 100%; 
+            border: none; 
+            border-bottom: 1px solid #DDDDDD; 
+            padding: 12px 0;
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 15px; 
+            font-weight: 400; 
+            color: #111111;
+            background: transparent; 
+            transition: border-color 0.3s; 
+            outline: none;
+        }
+
+        .nlb-input:focus { 
+            border-bottom-color: #111111; 
+        }
+
+        .nlb-input::placeholder { 
+            color: #AAAAAA; 
+            font-weight: 300; 
+        }
+        
+        .nlb-input.error { 
+            border-bottom-color: #FF5A5F; 
+        }
+
+        /* Стили для красивого отображения даты */
+        input[type="date"].nlb-input {
+            color: #AAAAAA;
+        }
+        input[type="date"].nlb-input:focus,
+        input[type="date"].nlb-input:valid {
+            color: #111111;
+        }
+
+        .error-msg {
+            color: #FF5A5F; 
+            font-size: 11px; 
+            font-weight: 500; 
+            position: absolute;
+            bottom: -16px; 
+            left: 0; 
+            display: none;
+        }
+
+        .btn-solid {
+            background-color: #111111; 
+            color: #FFFFFF; 
+            border: none; 
+            width: 100%; 
+            padding: 18px 0; 
+            border-radius: 4px;
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 15px; 
+            font-weight: 500; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            margin-top: 10px;
+        }
+
+        .btn-solid:hover { 
+            background-color: #333333; 
+        }
+
+        .back-link {
+            display: inline-block; 
+            font-size: 13px; 
+            color: #888888; 
+            font-weight: 500; 
+            cursor: pointer; 
+            margin-bottom: 30px; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+        }
+
+        .back-link:hover { 
+            color: #111111; 
+        }
+
+        .checkout-right {
+            width: 420px; 
+            background-color: #2A2828; 
+            color: #FFFFFF; 
+            padding: 60px 50px;
+            display: flex; 
+            flex-direction: column; 
+            position: relative; 
+            overflow: hidden;
+        }
+
+        .bg-watermark {
+            position: absolute; 
+            bottom: 10%; 
+            right: 2%; 
+            font-size: 157px; 
+            font-weight: 200; 
+            color: #FFFFFF; 
+            opacity: 0.03; 
+            line-height: 1; 
+            pointer-events: none;
+        }
+
+        .summary-title { 
+            font-size: 14px; 
+            font-weight: 500; 
+            color: #888888; 
+            text-transform: uppercase;
+            letter-spacing: 2px; 
+            margin-bottom: 40px; 
+        }
+
+        .tariff-card {
+            background-color: rgba(255,255,255,0.05); 
+            padding: 30px; 
+            border-radius: 8px; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            margin-bottom: 40px;
+        }
+
+        .tariff-name { 
+            font-size: 24px; 
+            font-weight: 400; 
+            margin-bottom: 10px; 
+        }
+
+        .tariff-duration { 
+            font-size: 14px; 
+            font-weight: 300; 
+            color: #BBBBBB; 
+            margin-bottom: 25px; 
+            line-height: 1.5; 
+        }
+
+        .tariff-price { 
+            font-size: 32px; 
+            font-weight: 300; 
+        }
+
+        .summary-row { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 20px; 
+            font-size: 15px; 
+            font-weight: 300; 
+            color: #BBBBBB; 
+        }
+
+        .summary-row.total { 
+            border-top: 1px solid rgba(255,255,255,0.2); 
+            padding-top: 20px; 
+            margin-top: 20px; 
+            font-size: 20px; 
+            font-weight: 400; 
+            color: #FFFFFF; 
+        }
+
+        .modal-overlay {
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
+            background: rgba(0,0,0,0.8); 
+            z-index: 20000;
+            display: none; 
+            justify-content: center; 
+            align-items: center;
+            opacity: 0; 
+            transition: opacity 0.3s;
+        }
+
+        .modal-overlay.show { 
+            display: flex; 
+            opacity: 1; 
+        }
+        
+        .inactivity-modal {
+            background: #FFFFFF; 
+            padding: 50px 40px; 
+            border-radius: 8px;
+            text-align: center; 
+            max-width: 420px; 
+            width: 90%;
+            transform: translateY(20px); 
+            transition: 0.3s;
+            color: #111111;
+        }
+
+        .modal-overlay.show .inactivity-modal { 
+            transform: translateY(0); 
+        }
+        
+        .inactivity-modal h2 { 
+            font-size: 24px; 
+            font-weight: 400; 
+            margin-bottom: 15px; 
+        }
+
+        .inactivity-modal p { 
+            font-size: 14px; 
+            font-weight: 300; 
+            color: #777; 
+            margin-bottom: 30px; 
+            line-height: 1.5; 
+        }
+
+        .timer-text { 
+            font-size: 48px; 
+            font-weight: 200; 
+            margin-bottom: 30px; 
+            color: #FF5A5F; 
+        }
+
+        .offline-toast {
+            position: fixed; 
+            top: -100px; 
+            left: 50%; 
+            transform: translateX(-50%);
+            background-color: #111111; 
+            color: #FFFFFF; 
+            font-size: 14px; 
+            font-weight: 300;
+            padding: 15px 35px; 
+            border-radius: 40px; 
+            display: flex; 
+            align-items: center; 
+            gap: 15px;
+            z-index: 10000; 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3); 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: top 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .offline-toast.show { 
+            top: 40px; 
+        }
+
+        .offline-dot { 
+            width: 8px; 
+            height: 8px; 
+            background-color: #FF5A5F; 
+            border-radius: 50%; 
+            box-shadow: 0 0 10px #FF5A5F; 
+            animation: pulse 1.5s infinite; 
+        }
+
+        .offline-dot.online { 
+            background-color: #4CAF50; 
+            box-shadow: 0 0 10px #4CAF50; 
+        }
+
+        @keyframes pulse { 
+            0% { transform: scale(1); opacity: 1; } 
+            50% { transform: scale(1.5); opacity: 0.5; } 
+            100% { transform: scale(1); opacity: 1; } 
+        }
+
+        @media (max-width: 1024px) {
+            .checkout-wrapper { 
+                flex-direction: column; 
+                height: auto; 
+                overflow: auto; 
+                margin-left: 0;
+            }
+            body, html { 
+                height: auto; 
+                overflow: auto; 
+            }
+            .sidebar {
+                display: none; /* скрываем сайдбар на мобильных или переделываем в бургер */
+            }
+            .checkout-left { 
+                padding: 40px 20px; 
+            }
+            .checkout-right { 
+                width: 100%; 
+                padding: 40px 20px; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <a href="index.html" class="sidebar-text">N.L.B</a>
+    </aside>
+
+    <div class="checkout-wrapper">
+        
+        <div class="checkout-left">
+            <a href="tariffs.html" class="back-link">← Вернуться к тарифам</a>
+
+            <div class="step-container active" id="step-1">
+                <h1 class="step-title">Авторизация</h1>
+                <p class="step-desc">Войдите в существующий аккаунт или создайте новый для оформления резидентства.</p>
+                
+                <div class="auth-tabs">
+                    <div class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Вход</div>
+                    <div class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">Регистрация</div>
+                </div>
+
+                <!-- ФОРМА ВХОДА -->
+                <div class="auth-form active" id="form-login">
+                    <div class="input-group">
+                        <input type="text" id="login-username" class="nlb-input" placeholder="Логин (Username)">
+                        <span class="error-msg" id="err-login-username"></span>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="login-password" class="nlb-input" placeholder="Пароль">
+                        <span class="error-msg" id="err-login-password"></span>
+                    </div>
+                    <button class="btn-solid" onclick="loginUser()">Войти и продолжить</button>
+                </div>
+
+                <!-- ФОРМА РЕГИСТРАЦИИ -->
+                <div class="auth-form" id="form-register">
+                    <div class="input-row">
+                        <div class="input-group" style="width: 50%;">
+                            <input type="text" id="reg-firstname" class="nlb-input" placeholder="Имя*">
+                            <span class="error-msg" id="err-reg-firstname"></span>
+                        </div>
+                        <div class="input-group" style="width: 50%;">
+                            <input type="text" id="reg-lastname" class="nlb-input" placeholder="Фамилия*">
+                            <span class="error-msg" id="err-reg-lastname"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="input-row">
+                        <!-- Поле телефона -->
+                        <div class="input-group" style="width: 50%;">
+                            <input type="tel" id="reg-phone" class="nlb-input" placeholder="Телефон*">
+                            <span class="error-msg" id="err-reg-phone"></span>
+                        </div>
+                        <!-- Поле даты рождения (календарь) -->
+                        <div class="input-group" style="width: 50%;">
+                            <input type="date" id="reg-dob" class="nlb-input" required>
+                            <span class="error-msg" id="err-reg-dob"></span>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <input type="text" id="reg-username" class="nlb-input" placeholder="Придумайте логин*">
+                        <span class="error-msg" id="err-reg-username"></span>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="reg-password" class="nlb-input" placeholder="Пароль (минимум 8 символов)*">
+                        <span class="error-msg" id="err-reg-password"></span>
+                    </div>
+
+                    <button class="btn-solid" onclick="registerUser()">Создать аккаунт</button>
+                </div>
+            </div>
+
+            <!-- ФОРМА ОПЛАТЫ -->
+            <div class="step-container" id="step-2">
+                <h1 class="step-title">Оплата</h1>
+                <p class="step-desc">Введите реквизиты банковской карты.</p>
+                
+                <div class="input-group">
+                    <input type="text" id="card-num" class="nlb-input" placeholder="Номер карты" maxlength="19">
+                    <span class="error-msg" id="err-card-num"></span>
+                </div>
+                
+                <div class="input-row">
+                    <div class="input-group" style="width: 50%;">
+                        <input type="text" id="card-exp" class="nlb-input" placeholder="ММ / ГГ" maxlength="7">
+                        <span class="error-msg" id="err-card-exp"></span>
+                    </div>
+                    <div class="input-group" style="width: 50%;">
+                        <input type="password" id="card-cvc" class="nlb-input" placeholder="CVC" maxlength="3">
+                        <span class="error-msg" id="err-card-cvc"></span>
+                    </div>
+                </div>
+                
+                <button class="btn-solid" onclick="processPayment(event)">Оплатить подписку</button>
+            </div>
+
+        </div>
+
+        <!-- ИНФО ПАНЕЛЬ СПРАВА -->
+        <div class="checkout-right">
+            <div class="bg-watermark">N.L.B</div>
+            <div class="summary-title">Ваш выбор</div>
+            
+            <div class="tariff-card">
+                <div class="tariff-name" id="summary-name">Загрузка...</div>
+                <div class="tariff-duration" id="summary-desc">...</div>
+                <div class="tariff-price" id="summary-price">0 ₽/мес</div>
+            </div>
+
+            <div class="summary-row"><span>Оформление карты</span><span>Бесплатно</span></div>
+            <div class="summary-row"><span>Подключение сервисов</span><span>Включено</span></div>
+
+            <div class="summary-row total">
+                <span>Итого к оплате</span>
+                <span id="summary-total">0 ₽</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- МОДАЛКИ (Таймер и Интернет) -->
+    <div class="modal-overlay" id="inactivity-overlay">
+        <div class="inactivity-modal">
+            <h2>Вы еще здесь?</h2>
+            <p>Мы заметили, что вы давно не совершали никаких действий. Для защиты ваших данных сессия будет завершена через:</p>
+            <div class="timer-text" id="countdown-timer">01:00</div>
+            <button class="btn-solid" onclick="continueSession()">Да, я продолжаю</button>
+        </div>
+    </div>
+
+    <div id="offline-toast" class="offline-toast">
+        <div class="offline-dot"></div>
+        <span id="offline-text">Нет подключения к сети. Проверьте интернет.</span>
+    </div>
+
+    <script>
+        let currentUserId = null; 
+        let selectedPlan = 'black';
+        document.addEventListener('DOMContentLoaded', () => {
+             if(window.location.hash === '#register') {
+                switchAuthTab('register');
+            } else {
+                switchAuthTab('login');
+            }
+            if (localStorage.getItem('token')) {
+                goToPayment();
+            }
+            const tariffsData = {
+                'black': { name: 'N.L.B BLACK', desc: 'Флагманская карта клуба. Никаких лимитов.', price: '2 999 ₽' },
+                'core': { name: 'CORE', desc: 'Идеально для тех, кто сфокусирован на самостоятельной работе.', price: '1 999 ₽' },
+                'balance': { name: 'BALANCE', desc: 'Сочетание тренажерного зала с глубокой растяжкой.', price: '2 200 ₽' },
+                'strike': { name: 'STRIKE', desc: 'Специальный тариф для адреналина и выносливости.', price: '2 600 ₽' }
+            };
+            const urlParams = new URLSearchParams(window.location.search);
+            selectedPlan = urlParams.get('plan');
+            if (!selectedPlan || !tariffsData[selectedPlan]) selectedPlan = 'black'; 
+            const planData = tariffsData[selectedPlan];
+            document.getElementById('summary-name').innerText = planData.name;
+            document.getElementById('summary-desc').innerText = planData.desc;
+            document.getElementById('summary-price').innerText = planData.price + '/мес';
+            document.getElementById('summary-total').innerText = planData.price;
+            document.getElementById('pay-btn').innerText = 'Оплатить ' + planData.price;
+            const dobInput = document.getElementById('reg-dob');
+            if (dobInput) {
+                const today = new Date();
+                const maxYear = today.getFullYear() - 14;
+                const month = (today.getMonth() + 1).toString().padStart(2, '0');
+                const day = today.getDate().toString().padStart(2, '0');
+                dobInput.max = `${maxYear}-${month}-${day}`;
+            }
+            const regPhone = document.getElementById('reg-phone');
+            if (regPhone) {
+                regPhone.addEventListener('input', function (e) {
+                    let input = e.target.value.replace(/\D/g, ''); 
+                    if (!input) {
+                        e.target.value = '';
+                        return;
+                    }
+                    if (['7', '8', '9'].indexOf(input[0]) > -1) {
+                        if (input[0] == '9') input = '7' + input;
+                        let firstSymbols = (input[0] == '8') ? '8' : '+7';
+                        let formattedInputValue = firstSymbols + ' ';
+                        if (input.length > 1) {
+                            formattedInputValue += '(' + input.substring(1, 4);
+                        }
+                        if (input.length >= 5) {
+                            formattedInputValue += ') ' + input.substring(4, 7);
+                        }
+                        if (input.length >= 8) {
+                            formattedInputValue += '-' + input.substring(7, 9);
+                        }
+                        if (input.length >= 10) {
+                            formattedInputValue += '-' + input.substring(9, 11);
+                        }
+                        e.target.value = formattedInputValue;
+                    } else {
+                        e.target.value = '+' + input.substring(0, 16);
+                    }
+                });
+            }
+        });
+        function switchAuthTab(tab) {
+            clearErrors();
+            document.getElementById('tab-login').classList.remove('active');
+            document.getElementById('tab-register').classList.remove('active');
+            document.getElementById('form-login').classList.remove('active');
+            document.getElementById('form-register').classList.remove('active');
+            document.getElementById('tab-' + tab).classList.add('active');
+            document.getElementById('form-' + tab).classList.add('active');
+        }
+        function showError(inputId, message) {
+            const input = document.getElementById(inputId);
+            const errSpan = document.getElementById('err-' + inputId);
+            input.classList.add('error');
+            errSpan.innerText = message;
+            errSpan.style.display = 'block';
+        }
+        function clearErrors() {
+            document.querySelectorAll('.nlb-input.error').forEach(el => el.classList.remove('error'));
+            document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
+        }
+        const nameRegex = /^[A-Za-zА-Яа-яЁё\s\-]{2,}$/; 
+        async function loginUser() {
+            clearErrors();
+            let isValid = true;
+            const user = document.getElementById('login-username').value.trim();
+            const pass = document.getElementById('login-password').value.trim();
+            
+            if (!user) { showError('login-username', 'Обязательное поле'); isValid = false; }
+            if (!pass) { showError('login-password', 'Обязательное поле'); isValid = false; }
+            if (!isValid) return;
+
+            try {
+                const res = await fetch('/login', { 
+                    method: 'POST', body: JSON.stringify({ username: user, password: pass }), 
+                    headers: {'Content-Type': 'application/json'} 
+                });
+                const result = await res.json();
+                
+                if (result.success) {
+                    localStorage.setItem('token', result.token); // Сохраняем сессию
+                    if(result.role === 1) {
+                        window.location.href = '/admin'; // Если зашел админ - кидаем в админку
+                    } else {
+                        goToPayment(); // Обычный пользователь идет на оплату
+                    }
+                } else {
+                    showError('login-password', result.message || 'Неверный логин или пароль');
+                }
+            } catch (error) {
+                alert('Ошибка соединения с сервером. Убедитесь, что бэкенд запущен.');
+            }
+        }
+        async function registerUser() {
+            clearErrors();
+            let isValid = true;
+            const fName = document.getElementById('reg-firstname').value.trim();
+            const lName = document.getElementById('reg-lastname').value.trim();
+            const phone = document.getElementById('reg-phone').value.trim();
+            const dob = document.getElementById('reg-dob').value;
+            const user = document.getElementById('reg-username').value.trim();
+            const pass = document.getElementById('reg-password').value.trim();
+
+            if (!nameRegex.test(fName)) { showError('reg-firstname', 'Только буквы (мин. 2)'); isValid = false; }
+            if (!nameRegex.test(lName)) { showError('reg-lastname', 'Только буквы (мин. 2)'); isValid = false; }
+            if (phone.replace(/\D/g, '').length < 11) { showError('reg-phone', 'Введите номер полностью'); isValid = false; }
+            if (!dob) { 
+                showError('reg-dob', 'Укажите дату рождения'); 
+                isValid = false; 
+            } else {
+                const birthDate = new Date(dob);
+                const todayDate = new Date();
+                let age = todayDate.getFullYear() - birthDate.getFullYear();
+                const m = todayDate.getMonth() - birthDate.getMonth();
+                
+                if (m < 0 || (m === 0 && todayDate.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                if (age < 14) { 
+                    showError('reg-dob', 'Регистрация доступна только с 14 лет'); 
+                    isValid = false; 
+                }
+            }
+            if (!user) { showError('reg-username', 'Логин обязателен'); isValid = false; }
+            if (pass.length < 8) { showError('reg-password', 'Пароль должен быть минимум 8 символов'); isValid = false; }
+            if (!isValid) return;
+
+            try {
+                const res = await fetch('/register', { 
+                    method: 'POST', 
+                    body: JSON.stringify({ firstName: fName, lastName: lName, phone: phone, dob: dob, username: user, password: pass }), 
+                    headers: {'Content-Type': 'application/json'} 
+                });
+                const result = await res.json();
+                
+                if (result.success) {
+                    localStorage.setItem('token', result.token); 
+                    goToPayment();
+                } else {
+                    showError('reg-username', result.message || 'Этот логин уже занят');
+                }
+            } catch (error) {
+                alert('Ошибка соединения с сервером. Убедитесь, что бэкенд запущен.');
+            }
+        }
+        async function processPayment(event) {
+            if(event) event.preventDefault();
+            clearErrors();
+            let isValid = true;
+
+            const cardNumRaw = document.getElementById('card-num').value;
+            const cardNum = cardNumRaw.replace(/\s/g, '');
+            const cardExp = document.getElementById('card-exp').value;
+            const cardCvc = document.getElementById('card-cvc').value;
+
+            if (cardNum.length !== 16) { showError('card-num', 'Номер карты должен состоять из 16 цифр'); isValid = false; }
+            if (cardExp.length !== 7) { showError('card-exp', 'Укажите срок в формате ММ / ГГ'); isValid = false; }
+            if (cardCvc.length !== 3) { showError('card-cvc', 'Введите 3 цифры CVC'); isValid = false; }
+
+            if (!isValid) return;
+
+            const token = localStorage.getItem('token');
+            if(!token) {
+                alert('Ошибка: Вы не авторизованы');
+                window.location.href = 'auth.html';
+                return;
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            let tariffId = 1; // BLACK по умолчанию
+            if(urlParams.get('plan') === 'core') tariffId = 2;
+            if(urlParams.get('plan') === 'balance') tariffId = 3;
+            if(urlParams.get('plan') === 'strike') tariffId = 4;
+
+            try {
+                const res = await fetch('/api/pay', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify({ tariffId: tariffId, cardNumber: cardNumRaw })
+                });
+
+                const data = await res.json();
+
+                if(data.success) {
+                    window.location.href = 'profile.html';
+                } else {
+                    alert("Ошибка оплаты: " + data.message);
+                }
+            } catch (error) {
+                alert("Ошибка соединения с сервером при оплате.");
+            }
+        }
+        function goToPayment() {
+            document.getElementById('step-1').classList.remove('active');
+            document.getElementById('step-2').classList.add('active');
+        }
+        document.getElementById('card-num').addEventListener('input', function () {
+            this.value = this.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim();
+        });
+        document.getElementById('card-exp').addEventListener('input', function () {
+            let val = this.value.replace(/\D/g, '');
+            if (val.length >= 2) this.value = val.substring(0, 2) + ' / ' + val.substring(2, 4);
+            else this.value = val;
+        });
+        let inactivityTimeout;
+        let countdownInterval;
+        let timeLeft = 60; 
+        const IDLE_TIME = 60 * 1000; 
+        function resetActivityTimer() {
+            if (document.getElementById('inactivity-overlay').classList.contains('show')) return;
+            clearTimeout(inactivityTimeout);
+            inactivityTimeout = setTimeout(showInactivityModal, IDLE_TIME);
+        }
+        function showInactivityModal() {
+            document.getElementById('inactivity-overlay').classList.add('show');
+            timeLeft = 60; 
+            updateTimerUI();
+            countdownInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerUI();
+                
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    window.location.href = 'index.html'; 
+                }
+            }, 1000);
+        }
+        function updateTimerUI() {
+            let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            let s = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('countdown-timer').innerText = `${m}:${s}`;
+        }
+        function continueSession() {
+            document.getElementById('inactivity-overlay').classList.remove('show');
+            clearInterval(countdownInterval);
+            resetActivityTimer(); 
+        }
+        ['mousemove', 'keydown', 'mousedown', 'touchstart', 'scroll'].forEach(evt => 
+            document.addEventListener(evt, resetActivityTimer)
+        ); 
+        resetActivityTimer();
+        window.addEventListener('offline', () => {
+            const toast = document.getElementById('offline-toast');
+            toast.querySelector('.offline-dot').classList.remove('online');
+            document.getElementById('offline-text').innerText = 'Нет подключения к сети. Проверьте интернет.';
+            toast.classList.add('show');
+        });
+        window.addEventListener('online', () => {
+            const toast = document.getElementById('offline-toast');
+            toast.querySelector('.offline-dot').classList.add('online');
+            document.getElementById('offline-text').innerText = 'Подключение восстановлено!';
+            setTimeout(() => { toast.classList.remove('show'); }, 3000);
+        });
+    </script>
+</body>
+</html>
